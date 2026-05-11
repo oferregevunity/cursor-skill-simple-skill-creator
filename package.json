@@ -1,0 +1,20 @@
+{
+  "name": "cursor-skill-simple-skill-creator",
+  "version": "1.1.0",
+  "description": "Install the simple-skill-creator SKILL.md for Cursor and Claude Code",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oferregevunity/cursor-skill-simple-skill-creator.git"
+  },
+  "type": "module",
+  "bin": "./bin/install.mjs",
+  "files": [
+    "bin",
+    ".cursor",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
