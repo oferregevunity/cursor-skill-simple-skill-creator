@@ -11,13 +11,16 @@ const SKILL_DIR = "simple-skill-creator";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgRoot = join(__dirname, "..");
-const skillSrc = join(
-  pkgRoot,
-  ".cursor",
-  "skills",
-  SKILL_DIR,
-  "SKILL.md",
-);
+
+function bundledSkillPath() {
+  const cursor = join(pkgRoot, ".cursor", "skills", SKILL_DIR, "SKILL.md");
+  const claude = join(pkgRoot, ".claude", "skills", SKILL_DIR, "SKILL.md");
+  if (existsSync(cursor)) return cursor;
+  if (existsSync(claude)) return claude;
+  throw new Error(
+    `Bundled skill missing (tried .cursor and .claude under ${pkgRoot})`,
+  );
+}
 
 function usage() {
   console.log(`cursor-skill-simple-skill-creator — copy SKILL.md for Cursor / Claude Code
@@ -74,9 +77,7 @@ function parseArgs(argv) {
 function installOne(destDir) {
   mkdirSync(destDir, { recursive: true });
   const dest = join(destDir, "SKILL.md");
-  if (!existsSync(skillSrc)) {
-    throw new Error(`Bundled skill missing at ${skillSrc}`);
-  }
+  const skillSrc = bundledSkillPath();
   copyFileSync(skillSrc, dest);
   return dest;
 }
