@@ -1,6 +1,13 @@
-# simple-skill-creator (Cursor + Claude Code)
+# Cursor + Claude Code skills
 
-End-to-end **skill studio** instructions: interview in plain language, draft `SKILL.md`, run with/without comparisons, collect feedback, tune triggers, and suggest MCPs. Use when building or upgrading repeatable agent skills in **Cursor**, **Claude Code**, or both.
+This repo ships **repeatable agent skills** for **Cursor** and **Claude Code**:
+
+| Skill | What it does |
+|-------|----------------|
+| **simple-skill-creator** | Skill studio: interview in plain language, draft `SKILL.md`, compare with/without runs, feedback, triggers, MCP ideas. |
+| **mcp-easy-install** | Hands-free MCP setup: name or docs URL → web research → merge **Cursor** `.cursor/mcp.json` / `~/.cursor/mcp.json` or **`claude mcp add`** (no hand-edited JSON for the human). |
+
+The **`npx`** installer below only installs **simple-skill-creator** today. For **mcp-easy-install**, use the [curl / clone](#mcp-easy-install-manual-install) section.
 
 ---
 
@@ -68,12 +75,32 @@ See [Install with npx](#install-with-npx-recommended) (default installs **both**
 
 ## This repo ships
 
-Two copies of the same skill (keep them in sync when editing the repo):
+Each skill is duplicated under **`.cursor/skills/<name>/`** and **`.claude/skills/<name>/`** so Cursor, Claude Code, raw GitHub URLs, and clones all see the same content. **Keep each pair in sync** when you edit the repo.
 
-- `.cursor/skills/simple-skill-creator/SKILL.md` — canonical for Cursor / `npx` bundle resolution
-- `.claude/skills/simple-skill-creator/SKILL.md` — same file, correct path for Claude Code clones and raw `curl`
+- **simple-skill-creator** — `.cursor/skills/…` and `.claude/skills/…`
+- **mcp-easy-install** — `.cursor/skills/…` and `.claude/skills/…`
 
-## Install with npx (recommended)
+### mcp-easy-install (manual install)
+
+**Cursor (project):**
+
+```bash
+mkdir -p .cursor/skills/mcp-easy-install
+curl -fsSL https://raw.githubusercontent.com/oferregevunity/cursor-skill-simple-skill-creator/main/.cursor/skills/mcp-easy-install/SKILL.md \
+  -o .cursor/skills/mcp-easy-install/SKILL.md
+```
+
+**Claude Code (project):**
+
+```bash
+mkdir -p .claude/skills/mcp-easy-install
+curl -fsSL https://raw.githubusercontent.com/oferregevunity/cursor-skill-simple-skill-creator/main/.claude/skills/mcp-easy-install/SKILL.md \
+  -o .claude/skills/mcp-easy-install/SKILL.md
+```
+
+Use `~/.cursor/skills/…` or `~/.claude/skills/…` for a **user-wide** copy (same `curl`, change the output path).
+
+## Install with npx (recommended) — simple-skill-creator only
 
 From the **project root** where you want the skill (installs **both** Cursor and Claude Code **project** skills by default):
 
@@ -148,22 +175,24 @@ The Claude-specific **`curl`** and **`git clone`** flows are in [If you use Clau
 ```bash
 git clone https://github.com/oferregevunity/cursor-skill-simple-skill-creator.git
 cd cursor-skill-simple-skill-creator
-# Cursor
+# Cursor — simple-skill-creator + mcp-easy-install
 cp -R .cursor/skills/simple-skill-creator /path/to/your/project/.cursor/skills/
+cp -R .cursor/skills/mcp-easy-install /path/to/your/project/.cursor/skills/
 # Claude Code
 cp -R .claude/skills/simple-skill-creator /path/to/your/project/.claude/skills/
+cp -R .claude/skills/mcp-easy-install /path/to/your/project/.claude/skills/
 ```
 
 ## Repo layout
 
 | Path | Role |
 |------|------|
-| `.cursor/skills/simple-skill-creator/SKILL.md` | Skill copy for Cursor / installer source |
-| `.claude/skills/simple-skill-creator/SKILL.md` | Same skill content at Claude Code’s expected path |
-| `bin/install.mjs` | Installer used by `npx` |
+| `.cursor/skills/*/SKILL.md` | Cursor + `npx` bundle source (per skill folder) |
+| `.claude/skills/*/SKILL.md` | Same markdown at Claude Code’s expected path |
+| `bin/install.mjs` | Installs **simple-skill-creator** via `npx` |
 | `package.json` | npm metadata + `bin` for `npx` |
 
-When you change the skill in this repo, update **both** `SKILL.md` copies so they stay identical (Claude Code users rely on the `.claude/…` path; Cursor and `npx` resolve from `.cursor/…` first).
+When you change a skill, update **both** `.cursor` and `.claude` copies for that skill so they stay identical.
 
 ## License
 
